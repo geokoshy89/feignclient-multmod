@@ -1,0 +1,53 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '3.3.3'
+  id 'io.spring.dependency-management' version '1.1.6'
+}
+
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.5"
+        }
+    }
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+
+
+}
+
+task buildAll {
+    description = 'Builds all subprojects'
+    group = 'build'
+
+    dependsOn subprojects.collect { it.tasks.build }
+}
+
+task run{
+    description = 'Runs bootRun for all subprojects'
+    group = 'application'
+
+    dependsOn subprojects.collect { it.tasks.bootRun }
+}
