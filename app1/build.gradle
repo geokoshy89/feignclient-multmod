@@ -4,15 +4,63 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+repositories {
+    mavenCentral()
+}
+configurations {
+    jaxws
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
+    jaxws 'com.sun.xml.ws:jaxws-tools:2.3.3'
+    jaxws 'javax.xml.ws:jaxws-api:2.3.1'
+    jaxws 'com.sun.xml.ws:rt:2.3.2'
+    jaxws 'javax.xml.bind:jaxb-api:2.3.1'
+
+    jaxws 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    jaxws 'javax.activation:activation:1.1.1'
+    implementation group: 'sax', name: 'sax', version: '2.0.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.xml.ws:jaxws-api:2.3.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.0'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'com.sun.xml.ws:jaxws-rt:2.3.2'
 }
-bootRun {
-    mainClass = 'com.geo.server.App1Main'
+
+
+
+task generateWsdlSources(type: JavaExec) {
+    def wsdlDir = file("${projectDir}/src/main/resources/wsdl")
+    def sourceOutputDir  = file("${projectDir}/src/main/java")
+    def wsdlFile = file("${wsdlDir}/sample.wsdl")
+    def classOutputDir = file("${layout.buildDirectory.get()}/classes/java/main")
+
+    inputs.file wsdlFile
+    outputs.dir sourceOutputDir
+    outputs.dir classOutputDir
+
+    doLast {
+        sourceOutputDir.mkdirs()
+        classOutputDir.mkdirs()
+    }
+    mainClass = 'com.sun.tools.ws.WsImport'
+    classpath = configurations.jaxws
+    args = [
+            '-d', classOutputDir,
+            '-s', sourceOutputDir,
+            '-p', 'com.geo.server.wits',
+            wsdlFile.absolutePath
+    ]
+}
+
+compileJava.dependsOn generateWsdlSources
+
+sourceSets {
+    main {
+        java {
+            srcDir "${projectDir}/src/main/java"
+        }
+    }
 }
