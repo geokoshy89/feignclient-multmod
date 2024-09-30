@@ -1,6 +1,7 @@
 package com.geo.client;
 
 import com.geo.client.dto.Person;
+import com.geo.client.dto.ResponseDTO;
 import com.geo.client.feignclient.Server1Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,11 @@ public class Controller {
     @GetMapping("/client/person")
     public ResponseEntity<Person> getPerson(){
         return server1Client.getPerson();
+    }
+
+    @GetMapping("/client/personerr")
+    public ResponseEntity<ResponseDTO<Person>> getErrPerson(){
+        return server1Client.getErrPerson();
     }
 
     @GetMapping("/client/person2/{id}")

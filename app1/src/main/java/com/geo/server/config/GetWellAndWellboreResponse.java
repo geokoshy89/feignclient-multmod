@@ -1,5 +1,4 @@
-
-package com.geo.server.wits;
+package com.geo.server.config;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -18,8 +17,8 @@ import jakarta.xml.bind.annotation.XmlType;
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="WellDetails" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         <element name="WellboreDetails" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         <element name="WellDetails" type="{http://example.com/witsml}WellDetailsType"/>
+ *         <element name="WellboreDetails" type="{http://example.com/witsml}WellboreDetailsType"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -33,7 +32,7 @@ import jakarta.xml.bind.annotation.XmlType;
     "wellDetails",
     "wellboreDetails"
 })
-@XmlRootElement(name = "GetWellAndWellboreResponse")
+@XmlRootElement(name = "GetWellAndWellboreResponse", namespace = "http://example.com/witsml")
 public class GetWellAndWellboreResponse {
 
     @XmlElement(name = "WellDetails", required = true)
@@ -46,7 +45,7 @@ public class GetWellAndWellboreResponse {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link WellDetailsType }
      *     
      */
     public String getWellDetails() {
@@ -58,7 +57,7 @@ public class GetWellAndWellboreResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link WellDetailsType }
      *     
      */
     public void setWellDetails(String value) {
@@ -70,7 +69,7 @@ public class GetWellAndWellboreResponse {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link WellboreDetailsType }
      *     
      */
     public String getWellboreDetails() {
@@ -82,7 +81,7 @@ public class GetWellAndWellboreResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link WellboreDetailsType }
      *     
      */
     public void setWellboreDetails(String value) {

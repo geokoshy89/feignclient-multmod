@@ -1,0 +1,60 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://www.witsml.org/schemas/1series"
+             xmlns:wits="http://www.witsml.org/schemas/1series"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://www.witsml.org/schemas/1series">
+
+    <types>
+        <xsd:schema targetNamespace="http://www.witsml.org/schemas/1series">
+            <xsd:element name="GetFromStoreRequest" type="tns:GetFromStoreRequest"/>
+            <xsd:element name="GetFromStoreResponse" type="tns:GetFromStoreResponse"/>
+
+            <xsd:complexType name="GetFromStoreRequest">
+                <xsd:sequence>
+                    <xsd:element name="query" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="GetFromStoreResponse">
+                <xsd:sequence>
+                    <xsd:element name="result" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <message name="GetFromStoreRequest">
+        <part name="parameters" element="tns:GetFromStoreRequest"/>
+    </message>
+
+    <message name="GetFromStoreResponse">
+        <part name="parameters" element="tns:GetFromStoreResponse"/>
+    </message>
+
+    <portType name="WITSMLPortType">
+        <operation name="GetFromStore">
+            <input message="tns:GetFromStoreRequest"/>
+            <output message="tns:GetFromStoreResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="WITSMLBinding" type="tns:WITSMLPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="GetFromStore">
+            <soap:operation soapAction="http://www.witsml.org/schemas/1series/GetFromStore"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="WITSMLService">
+        <port name="WITSMLPort" binding="tns:WITSMLBinding">
+            <soap:address location="http://localhost:8080/ws"/>
+        </port>
+    </service>
+</definitions>

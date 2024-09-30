@@ -1,0 +1,16 @@
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               jaxb:version="2.1"
+              schemaLocation="latest.wsdl">
+    <jaxb:bindings schemaLocation="latest.wsdl" node="/xs:schema">
+        <jaxb:bindings node="//xs:complexType">
+            <jaxb:class>
+                <jaxb:annotate>
+                    <jaxb:annotation>
+                        <jaxb:class ref="jakarta.xml.bind.annotation.XmlRootElement"/>
+                    </jaxb:annotation>
+                </jaxb:annotate>
+            </jaxb:class>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>

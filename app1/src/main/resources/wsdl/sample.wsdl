@@ -1,10 +1,10 @@
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
-             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://example.com/witsml"
-             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-             targetNamespace="http://example.com/witsml">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wits="http://example.com/witsml"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://example.com/witsml">
 
-    <types>
+    <wsdl:types>
         <xsd:schema targetNamespace="http://example.com/witsml">
             <xsd:element name="GetWellAndWellboreRequest">
                 <xsd:complexType>
@@ -17,71 +17,70 @@
             <xsd:element name="GetWellAndWellboreResponse">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="WellDetails" type="xsd:string"/>
-                        <xsd:element name="WellboreDetails" type="xsd:string"/>
+                        <xsd:element name="WellDetails" type="wits:WellDetailsType"/>
+                        <xsd:element name="WellboreDetails" type="wits:WellboreDetailsType"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
-            <xsd:element name="GetCapabilitiesRequest" type="xsd:string"/>
-            <xsd:element name="GetCapabilitiesResponse">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="Capabilities" type="xsd:string"/>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
+            <xsd:complexType name="WellDetailsType">
+                <xsd:sequence>
+                    <xsd:element name="Well" type="wits:WellType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="WellboreDetailsType">
+                <xsd:sequence>
+                    <xsd:element name="Wellbore" type="wits:WellboreType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="WellType">
+                <xsd:sequence>
+                    <xsd:element name="Name" type="xsd:string"/>
+                    <xsd:element name="UID" type="xsd:string"/>
+                    <xsd:element name="Location" type="xsd:string"/>
+                    <xsd:element name="Operator" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="WellboreType">
+                <xsd:sequence>
+                    <xsd:element name="Name" type="xsd:string"/>
+                    <xsd:element name="UID" type="xsd:string"/>
+                    <xsd:element name="Status" type="xsd:string"/>
+                    <xsd:element name="MD" type="xsd:double"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xsd:schema>
-    </types>
+    </wsdl:types>
 
-    <message name="GetWellAndWellboreRequestMessage">
-        <part name="parameters" element="tns:GetWellAndWellboreRequest"/>
-    </message>
-    <message name="GetWellAndWellboreResponseMessage">
-        <part name="parameters" element="tns:GetWellAndWellboreResponse"/>
-    </message>
-    <message name="GetCapabilitiesRequestMessage">
-        <part name="parameters" element="tns:GetCapabilitiesRequest"/>
-    </message>
-    <message name="GetCapabilitiesResponseMessage">
-        <part name="parameters" element="tns:GetCapabilitiesResponse"/>
-    </message>
+    <wsdl:message name="GetWellAndWellboreRequestMessage">
+        <wsdl:part name="parameters" element="wits:GetWellAndWellboreRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetWellAndWellboreResponseMessage">
+        <wsdl:part name="parameters" element="wits:GetWellAndWellboreResponse"/>
+    </wsdl:message>
 
-    <portType name="WITSMLPortType">
-        <operation name="GetWellAndWellbore">
-            <input message="tns:GetWellAndWellboreRequestMessage"/>
-            <output message="tns:GetWellAndWellboreResponseMessage"/>
-        </operation>
-        <operation name="GetCapabilities">
-            <input message="tns:GetCapabilitiesRequestMessage"/>
-            <output message="tns:GetCapabilitiesResponseMessage"/>
-        </operation>
-    </portType>
+    <wsdl:portType name="WITSMLPortType">
+        <wsdl:operation name="GetWellAndWellbore">
+            <wsdl:input message="wits:GetWellAndWellboreRequestMessage"/>
+            <wsdl:output message="wits:GetWellAndWellboreResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
 
-    <binding name="WITSMLBinding" type="tns:WITSMLPortType">
+    <wsdl:binding name="WITSMLBinding" type="wits:WITSMLPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <operation name="GetWellAndWellbore">
+        <wsdl:operation name="GetWellAndWellbore">
             <soap:operation soapAction="http://example.com/witsml/GetWellAndWellbore"/>
-            <input>
+            <wsdl:input>
                 <soap:body use="literal"/>
-            </input>
-            <output>
+            </wsdl:input>
+            <wsdl:output>
                 <soap:body use="literal"/>
-            </output>
-        </operation>
-        <operation name="GetCapabilities">
-            <soap:operation soapAction="http://example.com/witsml/GetCapabilities"/>
-            <input>
-                <soap:body use="literal"/>
-            </input>
-            <output>
-                <soap:body use="literal"/>
-            </output>
-        </operation>
-    </binding>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
 
-    <service name="WITSMLService">
-        <port name="WITSMLPort" binding="tns:WITSMLBinding">
+    <wsdl:service name="WITSMLService">
+        <wsdl:port name="WITSMLPort" binding="wits:WITSMLBinding">
             <soap:address location="http://example.com/witsml"/>
-        </port>
-    </service>
-</definitions>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

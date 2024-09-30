@@ -1,0 +1,68 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://www.example.com/witsml"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             name="WitsmlService"
+             targetNamespace="http://www.example.com/witsml">
+
+    <types>
+        <xsd:schema targetNamespace="http://www.example.com/witsml">
+            <xsd:element name="GetFromStoreRequest" type="tns:GetFromStoreRequestType"/>
+            <xsd:element name="GetFromStoreResponse" type="tns:GetFromStoreResponseType"/>
+
+            <xsd:complexType name="GetFromStoreRequestType">
+                <xsd:sequence>
+                    <xsd:element name="uid" type="xsd:string"/>
+                    <xsd:element name="options" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="DataType">
+                <xsd:sequence>
+                    <xsd:element name="Well" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="OtherData" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="GetFromStoreResponseType">
+                <xsd:sequence>
+                    <xsd:element name="data" type="tns:DataType"/>
+                    <xsd:element name="status" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <message name="GetFromStoreRequestMessage">
+        <part name="parameters" element="tns:GetFromStoreRequest"/>
+    </message>
+    <message name="GetFromStoreResponseMessage">
+        <part name="parameters" element="tns:GetFromStoreResponse"/>
+    </message>
+
+    <portType name="WitsmlPortType">
+        <operation name="GetFromStore">
+            <input message="tns:GetFromStoreRequestMessage"/>
+            <output message="tns:GetFromStoreResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="WitsmlBinding" type="tns:WitsmlPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetFromStore">
+            <soap:operation soapAction="http://www.example.com/witsml/GetFromStore"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="WitsmlService">
+        <port name="WitsmlPort" binding="tns:WitsmlBinding">
+            <soap:address location="http://www.example.com/witsml/service"/>
+        </port>
+    </service>
+</definitions>
